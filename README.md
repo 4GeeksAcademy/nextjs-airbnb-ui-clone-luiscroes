@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Airbnb UI clone · Next.js 16
 
-## Getting Started
+Clon de la interfaz de Airbnb hecho con **Next.js 16 (App Router), React, TypeScript y Tailwind CSS**, con enfoque mobile-first (375 px → escritorio desde 768 px).
 
-First, run the development server:
+El contexto del proyecto (usuario, páginas, componentes y especificaciones a partir de capturas) está en [`context.md`](context.md). Las capturas de referencia están en [`docs/vision/`](docs/vision/).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Páginas
+
+| Ruta | Descripción |
+|---|---|
+| `/` | Home: buscador que filtra en tiempo real, categorías con estado activo y cuadrícula de alojamientos con carga simulada de 1 s. |
+| `/catalog` | Catálogo: número de resultados, orden por precio (ascendente/descendente), tarjetas reutilizadas y marcador de mapa (derecha en escritorio, debajo en móvil). |
+| `/rooms/[id]` | Detalle: carga por `id`, galería con Anterior/Siguiente, cabecera, anfitrión, servicios y tarjeta de reserva con contador de huéspedes. |
+
+## Estructura
+
+```
+app/            rutas (/, /catalog, /rooms/[id])
+components/
+  layout/       Navbar, Logo, SearchBar, UserMenu
+  listings/     CategoryBar, CategoryItem, ListingCard, ListingGrid, ResultsHeader, SortControl, MapPlaceholder
+  room/         RoomDetail, PhotoGallery, RoomHeader, HostInfo, AmenitiesGrid, BookingCard, GuestCounter, BackLink
+  ui/           PhotoPlaceholder, RatingStars, LoadingState
+data/           datos de prueba (categorías, alojamientos, habitaciones)
+types/          tipos TypeScript (Listing, Room, Host, Amenity, Category, SortOrder)
+docs/vision/    capturas de Airbnb a 375 px
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Cómo ejecutarlo
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Abre http://localhost:3000. Para comprobar la compilación: `npm run build` y `npm run lint`.
 
-## Learn More
+## Reglas seguidas
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Solo Tailwind CSS: sin librerías de UI y sin `style={{}}`.
+- Navegación con `<Link>` de Next.js (nunca `<a href>`).
+- Un componente funcional (`const`) por archivo, de 80 líneas como máximo.
+- Estado con `useState` y carga simulada con `useEffect` + `setTimeout`.
